@@ -6,7 +6,7 @@ library(tidyr)
 library(R.utils)
 
 # Parámetros
-geo_id <- "GSE192812"  # Cambia por el GSE que necesites
+geo_id <- "GSEXXXXXX"  # Cambia por el GSE que necesites
 output_dir <- "data2" # Directorio por defecto, cambiar si es necesario
 
 # Crear carpeta si no existe
@@ -19,7 +19,7 @@ pheno$GSM <- rownames(pheno)
 
 # En caso de que falle la descarga, se puede descargar manualmente el archivo series matrix
 # este se coloca dentro del directorio data2 (o el seleccionado) y se ejecuta:
-# local_soft <- "data2/GSEXXXXXX_series_matrix.txt.gz"
+# local_soft <- "data2/GSEXXXXXX_series_matrix.txt.gz" #RECUERDA CAMBIAR AQUI TAMBIEN EL GSE (ACCESION NUMBRE)
 # gset <- GEOquery::getGEO(filename = local_soft)
 
 # En estos casos, es probable que se requiera usar:
@@ -70,7 +70,7 @@ samplesheet <- data.frame(Basename = basenames) %>%
 # Posiblemente, la mayoria funcione bien con el codigo tal como esta
 
 # 7. Unir con metadatos GEO
-
+# REVISA EL NOMBRE DE SAMPLESHEET Y PHENO
 #Se puede cambiar el join_by por by si ambas columnas en pheno y samplesheet tienen el mismo nombre
 samplesheet <- left_join(samplesheet, pheno, join_by( "GSM"== "geo_accession"))
 
@@ -78,12 +78,12 @@ samplesheet <- left_join(samplesheet, pheno, join_by( "GSM"== "geo_accession"))
 # Ten en cuenta que las columnas pueden cambiar de nombre, así que se recomienda ver a pheno
 # " View(pheno)" para conocer las columnas de interés
 samplesheet_final <- samplesheet %>%
-  select(GSM, Sample_Name, Sentrix_ID, Sentrix_Position,
+  select(GSM, Sample_Name, Sentrix_ID, Sentrix_Position, # Estas son la base del ID, no modificar
          sample_type = `tissue:ch1`, #Cambie por el nombre de columna interes
          diagnosis = `characteristics_ch1`, #Cambie por el nombre de columna interes
          disease_state = `pregestational obesity:ch1`, #Cambie por el nombre de columna interes
          sex = `offspring's sex:ch1`, #Cambie por el nombre de columna interes
-         tissue = `tissue:ch1`)
+         tissue = `tissue:ch1`) #Cambie por el nombre de columna interes
 
 # Las columnas deben tener el nombre identico de pheno
 # además, se pueden agregar más columnas solo siguiendo el siguiente patron:
